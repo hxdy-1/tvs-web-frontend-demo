@@ -26,13 +26,15 @@ pipeline {
       }
     }
     stage('Deploy to S3') {
-      steps {
-        script {
-          sh """
-            aws s3 cp publish s3://${BUCKET_NAME}/microfe/${PROJECT_NAME}/ --recursive
-          """
+        steps {
+            script {
+                withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                    sh """
+                        aws s3 cp publish s3://${BUCKET_NAME}/microfe/${PROJECT_NAME}/ --recursive
+                    """
+                }
+            }
         }
-      }
     }
   }
   post {
