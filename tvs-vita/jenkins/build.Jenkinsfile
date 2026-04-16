@@ -15,7 +15,8 @@ pipeline {
         dir("${PROJECT_FOLDER}") {
           sh '''
             mkdir -p publish
-            echo "<html><body>Build: $CURRENT_BUILD_DISPLAY - $(date)</body></html>" > publish/index.html
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+            echo "<html><body>Build: $CURRENT_BUILD_DISPLAY - $(date)<br>Commit: $COMMIT_MSG</body></html>" > publish/index.html
             tar -zcf ${PROJECT_NAME}-${CURRENT_BUILD_DISPLAY}.tar.gz publish/
           '''
         }
